@@ -9,8 +9,8 @@ export const RobotProvider = ({ children }) => {
 
   const cardinalDirections = ['n', 'e', 's', 'w']
 
-  const addRobot = () => {
-    setRobots((robots) => [...robots, { x: 0, y: 0, f: 'n' }])
+  const addRobot = (x, y, f) => {
+    setRobots((robots) => [...robots, { x: x, y: y, f: f }])
   }
 
   const turnRobot = (robotIndex, direction) => {

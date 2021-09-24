@@ -8,6 +8,10 @@ import {
   Button,
   Center,
   Text,
+  Input,
+  InputGroup,
+  InputLeftAddon,
+  Select,
 } from '@chakra-ui/react'
 
 import { RobotContext } from '../context/RobotContext'
@@ -15,20 +19,12 @@ import { RobotContext } from '../context/RobotContext'
 export default function ControlPanel() {
   const [currentRobot, setCurrentRobot] = useState(0)
   const [report, setReport] = useState('')
+  const [newRobotX, setNewRobotX] = useState(0)
+  const [newRobotY, setNewRobotY] = useState(0)
+  const [newRobotF, setNewRobotF] = useState('n')
 
   const { robots, turnRobot, moveRobot, addRobot, robotDirection } =
     useContext(RobotContext)
-
-  const checkOrigin = () => {
-    let isOccupied = false
-
-    robots.forEach((robot) => {
-      if (robot.x === 0 && robot.y === 0) {
-        isOccupied = true
-      }
-    })
-    return isOccupied
-  }
 
   const generateReport = () => {
     setReport(
@@ -43,6 +39,10 @@ export default function ControlPanel() {
     )
   }
 
+  const addNewRobot = () => {
+    addRobot(newRobotX, newRobotY, newRobotF)
+  }
+
   useEffect(() => {
     setReport('')
   }, [robots])
@@ -51,7 +51,32 @@ export default function ControlPanel() {
     <Container>
       <Center>
         <Stack direction='column'>
-          <Button my='5' isDisabled={checkOrigin()} onClick={addRobot}>
+          <Stack direction='row'>
+            <InputGroup>
+              <InputLeftAddon children='X:' />
+              <Input
+                value={newRobotX + 1}
+                onChange={(e) => setNewRobotX(e.target.value - 1)}
+              />
+            </InputGroup>
+            <InputGroup>
+              <InputLeftAddon children='Y:' />
+              <Input
+                value={newRobotY + 1}
+                onChange={(e) => setNewRobotY(e.target.value - 1)}
+              />
+            </InputGroup>
+            <Select
+              value={newRobotF}
+              onChange={(e) => setNewRobotF(e.target.value)}
+            >
+              <option value='n'>North</option>
+              <option value='e'>East</option>
+              <option value='s'>South</option>
+              <option value='w'>West</option>
+            </Select>
+          </Stack>
+          <Button my='5' onClick={addNewRobot}>
             Add Robot
           </Button>
           <RadioGroup
